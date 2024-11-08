@@ -1,8 +1,17 @@
+'use client';
+
+import { KAKAO_AUTH_URL } from '@/lib/api/auth/kakao';
+
 export default function SocialLogin() {
+  const handleKakaoLogin = () => {
+    window.location.href = KAKAO_AUTH_URL;
+  };
+
   return (
     <div className="grid grid-cols-1 gap-3">
       <button
         type="button"
+        onClick={handleKakaoLogin}
         className="inline-flex w-full items-center justify-center rounded-md bg-[#FEE500] px-4 py-2 text-sm font-medium text-[#000000] hover:bg-[#FDD835] focus:outline-none focus:ring-2 focus:ring-[#FEE500] focus:ring-offset-2"
       >
         <svg
