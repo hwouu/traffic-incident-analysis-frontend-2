@@ -1,12 +1,6 @@
-@import 'swiper/css';
-@import 'swiper/css/pagination';
-@import 'swiper/css/effect-fade';
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import './animations.css';
 
 :root {
   --background: #ffffff;
@@ -24,21 +18,4 @@ body {
   color: var(--foreground);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
-}
-
-.swiper-pagination-bullet {
-  background-color: #6B7280 !important;
-}
-
-.swiper-pagination-bullet-active {
-  background-color: #10B981 !important;
-}
-
-/* Dark mode styles */
-.dark .swiper-pagination-bullet {
-  background-color: #9CA3AF !important;
-}
-
-.dark .swiper-pagination-bullet-active {
-  background-color: #34D399 !important;
 }
