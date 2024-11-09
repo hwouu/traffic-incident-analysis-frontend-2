@@ -1,8 +1,10 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, A11y, EffectFade, Autoplay } from 'swiper/modules';
+import Link from 'next/link';
+import Logo from '@/components/common/Logo';
 import SlideContent from './SlideContent';
 
 // Import Swiper styles
@@ -11,12 +13,6 @@ import 'swiper/css/pagination';
 import 'swiper/css/effect-fade';
 
 export function WelcomeSlide() {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
   const slides = [
     {
       title: '교통사고 분석 시스템',
@@ -35,12 +31,13 @@ export function WelcomeSlide() {
     },
   ];
 
-  if (!mounted) {
-    return null;
-  }
-
   return (
-    <div className="h-full w-full">
+    <div className="relative h-full w-full">
+      {/* Logo 추가 - 크기를 xl로 변경 */}
+      <div className="absolute left-6 top-6 z-50">
+        <Logo variant="with-text" size="xl" />
+      </div>
+
       <Swiper
         modules={[Pagination, A11y, EffectFade, Autoplay]}
         spaceBetween={0}
@@ -58,13 +55,11 @@ export function WelcomeSlide() {
         className="h-full"
       >
         {slides.map((slide, index) => (
-          <SwiperSlide key={index} className="bg-background transition-colors dark:bg-dark-background">
-            <SlideContent
-              title={slide.title}
-              description={slide.description}
-              image={slide.image}
-              isLast={index === slides.length - 1}
-            />
+          <SwiperSlide
+            key={index}
+            className="bg-background transition-colors dark:bg-dark-background"
+          >
+            <SlideContent title={slide.title} description={slide.description} image={slide.image} />
           </SwiperSlide>
         ))}
       </Swiper>

@@ -20,16 +20,11 @@ const config: Config = {
           light: '#9CA3AF',   // gray-400
           dark: '#4B5563',    // gray-600
         },
-        background: {
-          DEFAULT: '#FFFFFF',
-          dark: '#1F2937',
-        },
-        dark: {
-          primary: '#34D399',   // emerald-400
-          secondary: '#9CA3AF', // gray-400
-          background: '#1F2937',
-          text: '#F9FAFB',
-        },
+        // 배경색 정의 수정
+        white: '#FFFFFF',
+        background: '#FFFFFF',
+        'dark-background': '#111827', // gray-900
+        'dark-surface': '#1F2937',    // gray-800
       },
       fontFamily: {
         sans: ['var(--font-geist-sans)'],

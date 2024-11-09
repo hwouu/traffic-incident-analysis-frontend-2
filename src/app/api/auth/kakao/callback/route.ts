@@ -7,6 +7,7 @@ export async function GET(request: Request) {
     const code = searchParams.get('code');
 
     if (!code) {
+      console.error('Authorization code is missing');
       return NextResponse.redirect(new URL('/login?error=missing_code', request.url));
     }
 
@@ -18,10 +19,14 @@ export async function GET(request: Request) {
     const userInfo = await getKakaoUserInfo(accessToken);
     console.log('Kakao user info received:', userInfo);
 
-    // TODO: 사용자 정보를 데이터베이스에 저장하거나 업데이트
-
-    // 대시보드 루트로 리다이렉트 (여기서 사용자 타입에 따라 분기됨)
-    return NextResponse.redirect(new URL('/dashboard', request.url));
+    // TODO: 여기서 사용자 정보를 저장하거나 세션/쿠키를 설정
+    // 임시로 일반 사용자로 가정하고 user-dashboard로 리다이렉트
+    return NextResponse.redirect(new URL('/user-dashboard', request.url));
+    
+    // 나중에는 사용자 타입에 따라 분기 처리
+    // const userType = getUserType(userInfo); // 사용자 타입 확인 함수
+    // const redirectPath = userType === 'admin' ? '/admin-dashboard' : '/user-dashboard';
+    // return NextResponse.redirect(new URL(redirectPath, request.url));
   } catch (error) {
     console.error('Kakao login error:', error);
     return NextResponse.redirect(new URL('/login?error=auth_failed', request.url));

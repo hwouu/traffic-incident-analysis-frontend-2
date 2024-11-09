@@ -2,8 +2,8 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 export function middleware(request: NextRequest) {
-  // 현재 사용자의 인증 상태 확인
-  const isAuthenticated = true; // TODO: 실제 인증 확인 로직 구현
+  // 현재는 간단히 세션 쿠키로 인증 상태를 확인
+  const isAuthenticated = request.cookies.has('auth');  // true 대신 실제 인증 확인
 
   // 보호된 라우트에 대한 접근 제어
   if (request.nextUrl.pathname.startsWith('/dashboard') ||

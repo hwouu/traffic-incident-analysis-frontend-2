@@ -1,116 +1,91 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { Eye, EyeOff } from 'lucide-react';
+import { authenticateUser } from '@/lib/auth/auth';
+import Cookies from 'js-cookie';
 
 export default function LoginForm() {
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
-  const [userType, setUserType] = useState<'user' | 'admin'>('user');
+  const [error, setError] = useState('');
+  const [formData, setFormData] = useState({
+    id: '',
+    password: '',
+  });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: 로그인 로직 구현
+    setError('');
+
+    if (authenticateUser(formData)) {
+      // 로그인 성공
+      Cookies.set('auth', 'true', { expires: 7 });
+      router.push('/dashboard');
+    } else {
+      setError('아이디 또는 비밀번호가 올바르지 않습니다.');
+    }
   };
 
   return (
-    <form className="space-y-6" onSubmit={handleSubmit}>
-      {/* 사용자 유형 선택 */}
-      <div className="flex rounded-md shadow-sm">
-        <button
-          type="button"
-          className={`flex-1 rounded-l-md border px-4 py-2 text-sm font-medium ${
-            userType === 'user'
-              ? 'border-primary bg-primary text-white'
-              : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200'
-          }`}
-          onClick={() => setUserType('user')}
-        >
-          일반 사용자
-        </button>
-        <button
-          type="button"
-          className={`flex-1 rounded-r-md border px-4 py-2 text-sm font-medium ${
-            userType === 'admin'
-              ? 'border-primary bg-primary text-white'
-              : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200'
-          }`}
-          onClick={() => setUserType('admin')}
-        >
-          관리자
-        </button>
-      </div>
-
-      {/* 이메일 입력 */}
-      <div>
-        <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-          이메일
-        </label>
-        <input
-          id="email"
-          name="email"
-          type="email"
-          autoComplete="email"
-          required
-          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-primary dark:border-gray-600 dark:bg-gray-800 dark:text-white sm:text-sm"
-        />
-      </div>
-
-      {/* 비밀번호 입력 */}
-      <div>
-        <label
-          htmlFor="password"
-          className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-        >
-          비밀번호
-        </label>
-        <div className="relative mt-1">
-          <input
-            id="password"
-            name="password"
-            type={showPassword ? 'text' : 'password'}
-            autoComplete="current-password"
-            required
-            className="block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary focus:outline-none focus:ring-primary dark:border-gray-600 dark:bg-gray-800 dark:text-white sm:text-sm"
-          />
-          <button
-            type="button"
-            className="absolute inset-y-0 right-0 flex items-center px-2"
-            onClick={() => setShowPassword(!showPassword)}
-          >
-            {showPassword ? (
-              <EyeOff className="h-4 w-4 text-gray-500" />
-            ) : (
-              <Eye className="h-4 w-4 text-gray-500" />
-            )}
-          </button>
+    <form onSubmit={handleSubmit} className="space-y-6">
+      {error && (
+        <div className="rounded-md bg-red-50 p-4 text-sm text-red-600 dark:bg-red-900/50 dark:text-red-200">
+          {error}
         </div>
-      </div>
+      )}
 
-      {/* 추가 옵션 */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center">
-          <input
-            id="remember-me"
-            name="remember-me"
-            type="checkbox"
-            className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
-          />
-          <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900 dark:text-gray-300">
-            로그인 상태 유지
+      <div className="space-y-4">
+        <div>
+          <label htmlFor="id" className="block text-sm font-medium text-gray-900 dark:text-gray-300">
+            아이디
           </label>
+          <input
+            id="id"
+            name="id"
+            type="text"
+            required
+            value={formData.id}
+            onChange={(e) => setFormData({ ...formData, id: e.target.value })}
+            className="mt-1 block w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder-gray-500 focus:border-primary focus:ring-primary dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
+            placeholder="아이디를 입력하세요"
+          />
         </div>
 
-        <div className="text-sm">
-          <a href="#" className="text-primary hover:text-primary-dark">
-            비밀번호 찾기
-          </a>
+        <div>
+          <label htmlFor="password" className="block text-sm font-medium text-gray-900 dark:text-gray-300">
+            비밀번호
+          </label>
+          <div className="relative mt-1">
+            <input
+              id="password"
+              name="password"
+              type={showPassword ? 'text' : 'password'}
+              required
+              value={formData.password}
+              onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+              className="block w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder-gray-500 focus:border-primary focus:ring-primary dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
+              placeholder="비밀번호를 입력하세요"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 transform"
+            >
+              {showPassword ? (
+                <EyeOff className="h-5 w-5 text-gray-400" />
+              ) : (
+                <Eye className="h-5 w-5 text-gray-400" />
+              )}
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* 로그인 버튼 */}
       <button
         type="submit"
-        className="w-full rounded-md bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+        className="mt-6 w-full rounded-lg bg-primary px-4 py-3 text-center text-sm font-semibold text-white shadow-sm transition-colors hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
       >
         로그인
       </button>
