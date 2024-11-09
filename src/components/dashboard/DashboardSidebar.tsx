@@ -1,69 +1,99 @@
 'use client';
 
-import { Home, FileText, PlusCircle, History, LogOut } from 'lucide-react';
+import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useState } from 'react';
+import { 
+  LayoutDashboard,
+  FileText,
+  BarChart3,
+  Settings,
+  LogOut,
+  ChevronLeft,
+  ChevronRight
+} from 'lucide-react';
 
 export default function DashboardSidebar() {
+  const [isCollapsed, setIsCollapsed] = useState(false);
   const pathname = usePathname();
-  const [isUser] = useState(true); // TODO: 실제 사용자 타입에 따라 변경
 
-  const userMenuItems = [
-    { icon: Home, label: '대시보드', href: '/user-dashboard' },
-    { icon: PlusCircle, label: '신고하기', href: '/user-dashboard/report' },
-    { icon: History, label: '신고 내역', href: '/user-dashboard/history' },
+  const menuItems = [
+    {
+      name: '대시보드',
+      icon: LayoutDashboard,
+      path: '/dashboard',
+    },
+    {
+      name: '보고서',
+      icon: FileText,
+      path: '/dashboard/reports',
+    },
+    {
+      name: '분석',
+      icon: BarChart3,
+      path: '/dashboard/analysis',
+    },
   ];
-
-  const adminMenuItems = [
-    { icon: Home, label: '대시보드', href: '/admin-dashboard' },
-    { icon: PlusCircle, label: '사고 등록', href: '/admin-dashboard/register' },
-    { icon: FileText, label: '보고서 관리', href: '/admin-dashboard/reports' },
-  ];
-
-  const menuItems = isUser ? userMenuItems : adminMenuItems;
 
   return (
-    <aside className="w-64 bg-white shadow-md dark:bg-gray-800">
-      <div className="flex h-full flex-col">
-        {/* 로고 영역 */}
-        <div className="flex h-16 items-center justify-center border-b border-gray-200 dark:border-gray-700">
-          <span className="text-lg font-bold text-primary">Traffic Analysis</span>
-        </div>
+    <aside
+      className={`relative flex h-screen flex-col border-r border-gray-200 bg-white transition-all duration-300 dark:border-gray-800 dark:bg-gray-900 ${
+        isCollapsed ? 'w-20' : 'w-64'
+      }`}
+    >
+      {/* Toggle Button */}
+      <button
+        onClick={() => setIsCollapsed(!isCollapsed)}
+        className="absolute -right-3 top-6 flex h-6 w-6 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-500 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400"
+      >
+        {isCollapsed ? (
+          <ChevronRight className="h-4 w-4" />
+        ) : (
+          <ChevronLeft className="h-4 w-4" />
+        )}
+      </button>
 
-        {/* 메뉴 항목들 */}
-        <nav className="flex-1 space-y-1 px-2 py-4">
-          {menuItems.map((item) => {
-            const isActive = pathname === item.href;
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`flex items-center space-x-2 rounded-lg px-3 py-2 transition-colors ${
-                  isActive
-                    ? 'bg-primary text-white'
-                    : 'text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700'
-                }`}
-              >
-                <item.icon className="h-5 w-5" />
-                <span>{item.label}</span>
-              </Link>
-            );
-          })}
-        </nav>
+      {/* Logo */}
+      <div className="flex h-16 items-center justify-center border-b border-gray-200 px-4 dark:border-gray-700">
+        {isCollapsed ? (
+          <span className="text-xl font-bold">TAS</span>
+        ) : (
+          <span className="text-xl font-bold">교통사고분석시스템</span>
+        )}
+      </div>
 
-        {/* 로그아웃 버튼 */}
-        <div className="border-t border-gray-200 p-4 dark:border-gray-700">
-          <button
-            onClick={() => {
-              // TODO: 로그아웃 처리
-            }}
-            className="flex w-full items-center space-x-2 rounded-lg px-3 py-2 text-gray-600 transition-colors hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
-          >
-            <LogOut className="h-5 w-5" />
-            <span>로그아웃</span>
-          </button>
-        </div>
+      {/* Menu Items */}
+      <nav className="flex-1 space-y-1 px-2 py-4">
+        {menuItems.map((item) => {
+          const isActive = pathname === item.path;
+          return (
+            <Link
+              key={item.path}
+              href={item.path}
+              className={`flex items-center space-x-2 rounded-lg px-3 py-2 transition-colors ${
+                isActive
+                  ? 'bg-primary text-white'
+                  : 'text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-800'
+              }`}
+            >
+              <item.icon className={`h-5 w-5 ${isCollapsed ? 'mx-auto' : ''}`} />
+              {!isCollapsed && <span>{item.name}</span>}
+            </Link>
+          );
+        })}
+      </nav>
+
+      {/* Bottom Actions */}
+      <div className="border-t border-gray-200 p-4 dark:border-gray-700">
+        <button
+          onClick={() => {
+            // TODO: 로그아웃 구현
+          }}
+          className="flex w-full items-center space-x-2 rounded-lg px-3 py-2 text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-800"
+        >
+          <LogOut className={`h-5 w-5 ${isCollapsed ? 'mx-auto' : ''}`} />
+          {!isCollapsed && <span>로그아웃</span>}
+        </button>
       </div>
     </aside>
   );
