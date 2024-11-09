@@ -24,7 +24,7 @@ export default function DashboardSidebar() {
       path: '/dashboard',
     },
     {
-      name: '사고 분석',
+      name: '사고분석',
       icon: MessageSquareText,
       path: '/dashboard/analysis/chat',
     },
