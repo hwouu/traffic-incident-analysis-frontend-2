@@ -6,8 +6,8 @@ import { usePathname } from 'next/navigation';
 import { 
   LayoutDashboard,
   FileText,
+  MessageSquareText,
   BarChart3,
-  Settings,
   LogOut,
   ChevronLeft,
   ChevronRight
@@ -24,14 +24,19 @@ export default function DashboardSidebar() {
       path: '/dashboard',
     },
     {
+      name: '사고 분석',
+      icon: MessageSquareText,
+      path: '/dashboard/analysis/chat',
+    },
+    {
       name: '보고서',
       icon: FileText,
       path: '/dashboard/reports',
     },
     {
-      name: '분석',
+      name: '통계',
       icon: BarChart3,
-      path: '/dashboard/analysis',
+      path: '/dashboard/statistics',
     },
   ];
 
