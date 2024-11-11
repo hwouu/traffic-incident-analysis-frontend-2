@@ -24,14 +24,14 @@ export default function DashboardSidebar() {
       path: '/dashboard',
     },
     {
-      name: '분석',
-      icon: BarChart3,
-      path: '/dashboard/analysis',
-    },
-    {
       name: '사고 신고',
       icon: MessageSquareText,
       path: '/dashboard/analysis/chat',
+    },
+    {
+      name: '분석',
+      icon: BarChart3,
+      path: '/dashboard/analysis',
     },
     {
       name: '보고서',
