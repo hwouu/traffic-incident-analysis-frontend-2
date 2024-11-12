@@ -12,6 +12,7 @@ import {
   ChevronLeft,
   ChevronRight
 } from 'lucide-react';
+import { logout } from '@/lib/auth/auth';
 
 export default function DashboardSidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -44,6 +45,18 @@ export default function DashboardSidebar() {
       path: '/dashboard/statistics',
     },
   ];
+
+  const handleLogout = async () => {
+    try {
+      // 로그아웃 확인 다이얼로그 표시
+      if (window.confirm('로그아웃 하시겠습니까?')) {
+        logout();
+      }
+    } catch (error) {
+      console.error('Logout failed:', error);
+      alert('로그아웃 중 오류가 발생했습니다.');
+    }
+  };
 
   return (
     <aside
@@ -96,9 +109,7 @@ export default function DashboardSidebar() {
       {/* Bottom Actions */}
       <div className="border-t border-gray-200 p-4 dark:border-gray-700">
         <button
-          onClick={() => {
-            // TODO: 로그아웃 구현
-          }}
+          onClick={handleLogout}
           className="flex w-full items-center space-x-2 rounded-lg px-3 py-2 text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-800"
         >
           <LogOut className={`h-5 w-5 ${isCollapsed ? 'mx-auto' : ''}`} />
