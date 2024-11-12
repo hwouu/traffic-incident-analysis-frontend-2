@@ -5,5 +5,6 @@ export default function LoginLayout({
 }: {
   children: React.ReactNode;
 }) {
+  // AuthLayout 컴포넌트를 그대로 사용하고 children을 전달
   return <AuthLayout>{children}</AuthLayout>;
 }
