@@ -1,10 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import ThemeToggle from '../common/ThemeToggle';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Pagination } from 'swiper/modules';
+import Logo from '@/components/common/Logo';
 import 'swiper/css';
 import 'swiper/css/pagination';
 
@@ -28,6 +28,10 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
     <div className="flex min-h-screen bg-background dark:bg-dark-background">
       {/* Left Section - SVG Slider */}
       <div className="hidden w-1/2 bg-primary/10 lg:block dark:bg-primary-dark/20">
+        {/* 왼쪽 상단에 로고 추가 */}
+        <div className="absolute left-6 top-6 z-50">
+          <Logo variant="with-text" size="xl" />
+        </div>
         <Swiper
           modules={[Autoplay, Pagination]}
           spaceBetween={0}
@@ -66,7 +70,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
         <div className="absolute right-4 top-4 z-10">
           <ThemeToggle />
         </div>
-        <div className="flex min-h-screen w-full items-center justify-center bg-white px-6 transition-colors dark:bg-dark-background">
+        <div className="flex min-h-screen w-full items-center justify-center bg-white px-6 transition-colors dark:bg-gray-900">
           <div className="w-full max-w-md rounded-xl bg-white p-8 shadow-lg transition-colors dark:bg-gray-800/50">
             {children}
           </div>
