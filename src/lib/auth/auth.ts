@@ -11,8 +11,29 @@ const DUMMY_USER = {
   password: '1234',
 };
 
+// 더미 사용자 저장소 (배열 형태로 수정)
+const DUMMY_USERS: Credentials[] = [
+  { id: 'master', password: '1234' },
+];
+
 export const authenticateUser = (credentials: Credentials): boolean => {
   return credentials.id === DUMMY_USER.id && credentials.password === DUMMY_USER.password;
+};
+
+// 회원가입 함수
+export const registerUser = (newUser: Credentials): boolean => {
+  // 아이디가 이미 존재하는지 확인
+  const userExists = DUMMY_USERS.some((user) => user.id === newUser.id);
+
+  if (userExists) {
+    console.error('User already exists');
+    return false; // 사용자 중복
+  }
+
+  // 새로운 사용자 추가
+  DUMMY_USERS.push(newUser);
+  console.log('User registered:', newUser);
+  return true;
 };
 
 export const logout = () => {
