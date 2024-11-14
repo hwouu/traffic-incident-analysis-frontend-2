@@ -5,19 +5,15 @@ interface Credentials {
   password: string;
 }
 
-// 더미 사용자 데이터
-const DUMMY_USER = {
-  id: 'master',
-  password: '1234',
-};
-
 // 더미 사용자 저장소 (배열 형태로 수정)
 const DUMMY_USERS: Credentials[] = [
   { id: 'master', password: '1234' },
 ];
 
 export const authenticateUser = (credentials: Credentials): boolean => {
-  return credentials.id === DUMMY_USER.id && credentials.password === DUMMY_USER.password;
+  return DUMMY_USERS.some(
+    (user) => user.id === credentials.id && user.password === credentials.password
+  );
 };
 
 // 회원가입 함수
